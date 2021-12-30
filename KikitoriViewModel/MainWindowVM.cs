@@ -59,7 +59,7 @@ namespace Kikitori.ViewModel
         public void NewMedium()
         {
             var newMedium = new Data.Medium { Title = "New Title", Description = "Give Description" };
-            Media.Insert(newMedium);
+            Media.Insert(Media.Count, newMedium);
             NotifyAll();
         }
 
