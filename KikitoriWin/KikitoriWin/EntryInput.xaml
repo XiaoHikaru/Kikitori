@@ -1,0 +1,79 @@
+﻿<Window x:Class="Kikitori.EntryInput"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tools="clr-namespace:Kikitori.GUI"
+        xmlns:vm="clr-namespace:Kikitori.ViewModel;assembly=KikitoriViewModel"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="{Binding Title}" 
+        Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.5' }" 
+        Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.5' }" 
+        Closing="WindowClosing"
+    >
+
+    <Grid>
+        <Border Visibility="Visible" BorderThickness="2" BorderBrush="Black" CornerRadius="1" Margin="20,20,20,20">
+            <DockPanel Margin="3">
+                <StackPanel Orientation="Vertical" Margin="3" DockPanel.Dock="Top">
+                    <StackPanel Orientation="Vertical" Margin="3">
+                        <DockPanel Background="LightSkyBlue" LastChildFill="True">
+                            <TextBlock Name="TextBlockSentence" Text="Sentence" Margin="5" 
+                                       FontSize="16"
+                                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <TextBox Name="TextBoxSentence" FontSize="16" Height="25" Width="Auto" Text="{Binding CurrentSentence}" />
+                        </DockPanel >
+                        <DockPanel Background="LightSkyBlue" LastChildFill="True">
+                            <TextBlock Name="TextBlockFurigana" Text="Furigana" Margin="5" 
+                                       FontSize="16"
+                                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <TextBox FontSize="16" Height="25" Width="Auto" Text="{Binding CurrentFurigana}"/>
+                        </DockPanel >
+                        <DockPanel Background="LightSkyBlue" LastChildFill="True">
+                            <TextBlock Text="Audio" Margin="5" 
+                                       FontSize="16"
+                                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <Button  Name="ButtonAudioPlay" Content="Play Audio" Height="25" Width="Auto" IsEnabled="{Binding CurrentMP3AudioPresent}" Click="ButtonAudioPlayClick"/>
+                        </DockPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="3">
+                            <Button Name="ButtonAddClipboardContent" Content="Update clipboard content (audio or sentence)" Margin="3" Click="ButtonAddClipboardContentClick"/>
+                            <Button Name="ButtonMakeFuriganaProposition" Content="Make furigana proposition" Margin="3" Click="ButtonMakeFuriganaPropositionClick"/>
+                            <Button Name="ButtonAddEntry" Content="Add Entry" Margin="3" IsEnabled="{Binding CurrentInputIsComplete}" Click="ButtonAddEntryClick"/>
+                            <Button Name="ButtonDeleteEntry" Content="Delete Entry" Margin="3" Click="ButtonDeleteEntryClick"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <Grid DockPanel.Dock="Bottom">
+                        <DataGrid ItemsSource="{Binding SentenceItems, Mode=TwoWay}" 
+                              Name="SentenceItemsGrid" 
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False" 
+                              SelectionMode="Single" 
+                              CurrentCellChanged="ItemEdited"
+                              SelectedIndex="{Binding SelectedItemIndex, Mode=OneWayToSource}"
+                              ScrollViewer.CanContentScroll="True" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Sentence, Mode=TwoWay}" Width="4*" Header="Sentence" IsReadOnly="False" FontSize="25"  />
+                                <DataGridTextColumn Binding="{Binding Furigana, Mode=TwoWay}" Width="6*" Header="Furigana" IsReadOnly="False" FontSize="25"  />
+                            </DataGrid.Columns>
+                            <DataGrid.RowValidationRules>
+                                <vm:SentenceItemValidationRule ValidationStep="UpdatedValue"/>
+                            </DataGrid.RowValidationRules>
+                            <DataGrid.RowValidationErrorTemplate>
+                                <ControlTemplate>
+                                    <Grid Margin="0,-2,0,-2" ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
+                                        <Ellipse StrokeThickness="0" Fill="Red" Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}" />
+                                        <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"  />
+                                    </Grid>
+                                </ControlTemplate>
+                            </DataGrid.RowValidationErrorTemplate>
+                        </DataGrid>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
