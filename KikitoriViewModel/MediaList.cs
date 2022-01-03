@@ -50,5 +50,15 @@ namespace Kikitori.ViewModel
                 DB.Instance.Delete(item);
             }
         }
+
+        public void ResetTrainingData(int index)
+        {
+            Medium mediumToDelete = this[index];
+            foreach (var item in DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == mediumToDelete.ID))
+            {
+                item.TrainedKnownTokens = "";
+                DB.Instance.Update(item);
+            }
+        }
     }
 }

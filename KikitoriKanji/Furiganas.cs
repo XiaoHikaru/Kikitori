@@ -34,9 +34,11 @@ namespace Kikitori.Kanji
                     result += d.Surface;
                 }
             }
-      
+
             return result;
         }
+
+
         public static async Task<string> GetFuriganaProposition(string sentence)
         {
             if (sentence == null)

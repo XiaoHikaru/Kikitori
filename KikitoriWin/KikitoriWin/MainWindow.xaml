@@ -29,6 +29,8 @@
                     <Button Name="ButtonDeleteMedia" Content="Delete Medium" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonDeleteMediaClick"/>
                     <Button Name="ButtonAddExerciseEntry" Content="Add exercise entries" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonAddExerciseEntryClick"/>
                     <Button Name="ButtonStartGapQuiz" Content="Gap Quiz" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonStartGapQuizClick"/>
+                    <Button Name="ButtonResetGapQuiz" Content="Reset Gap Quiz results" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonResetGapQuizClick"/>
+
                 </StackPanel>
                 <Grid  DockPanel.Dock="Bottom">
                     <DataGrid ItemsSource="{Binding Media, Mode=TwoWay}" 

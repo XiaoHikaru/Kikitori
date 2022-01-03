@@ -76,13 +76,18 @@ namespace Kikitori
             {
                 return;
             }
-            MessageBoxResult messageBoxResult 
+            MessageBoxResult messageBoxResult
                 = System.Windows.MessageBox.Show($"This will also delete all exercise items of medium \"{vm.SelectedMediumTitle}\". Are you sure?",
                 "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 vm.DeleteSelectedMedium();
             }
+        }
+
+        private void ButtonResetGapQuizClick(object sender, RoutedEventArgs e)
+        {
+            vm.ResetTrainingData();
         }
 
         private void CellEdited(object sender, EventArgs e)

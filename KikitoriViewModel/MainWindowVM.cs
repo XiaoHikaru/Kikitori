@@ -82,6 +82,14 @@ namespace Kikitori.ViewModel
             }
         }
 
+        public void ResetTrainingData()
+        {
+            if (SelectedMediumIndex != -1)
+            {
+                Media.ResetTrainingData(SelectedMediumIndex);
+            }
+        }
+
         public void TransferToDB()
         {
             Media.TransferToDB();

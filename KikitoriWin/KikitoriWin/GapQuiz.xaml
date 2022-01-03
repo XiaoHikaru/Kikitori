@@ -27,6 +27,7 @@
                         <StackPanel Orientation="Horizontal" Margin="3">
                             <Button  Name="ButtonAudioPlay" Content="Play Audio" Height="25" Width="Auto" IsEnabled="{Binding CurrentMP3AudioPresent}" Click="ButtonAudioPlayClick"/>
                             <Button Name="ButtonCheck" Content="Check/Continue" Height="25" Margin="3" Click="ButtonCheckClick"/>
+
                         </StackPanel>
                         <DockPanel LastChildFill="True">
                             <TextBlock Name="TextBlockSolution" Text="{Binding CurrentCompleteSolutionHint}" Margin="5" 
