@@ -4,6 +4,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using Nito.AsyncEx;
 
 namespace Kikitori
 {
@@ -29,6 +30,9 @@ namespace Kikitori
             DataContext = vm;
             InitializeComponent();
             NewQuizItem();
+            var player = new Kikitori.Audio.AudioPlayer();
+            player.SimplePlay(vm.CurrentMP3Audio);
+
         }
 
         private async Task PlaySentence()
@@ -41,9 +45,15 @@ namespace Kikitori
             }
             ButtonAudioPlay.IsEnabled = true;
         }
+
         private async void ButtonAudioPlayClick(object sender, RoutedEventArgs e)
         {
             await PlaySentence();
+        }
+
+        private async Task WaitABit(int milisecondsDelay)
+        {
+            await Task.Delay(milisecondsDelay);
         }
 
         private async void ButtonCheckClick(object sender, RoutedEventArgs e)
@@ -51,11 +61,21 @@ namespace Kikitori
             if (vm.CheckAnswer())
             {
                 TextBlockSolution.Background = Brushes.LightGreen;
+                TextBlockSolutionFurigana.Background = Brushes.LightGreen;
+                TextBlockSolutionFurigana.Background = Brushes.White;
+                await WaitABit(2000);
             }
             else
             {
                 TextBlockSolution.Background = Brushes.OrangeRed;
+                TextBlockSolutionFurigana.Background = Brushes.OrangeRed;
+                await PlaySentence();
+                await WaitABit(2000);
             }
+            TextBlockSolution.Background = Brushes.White;
+            TextBlockSolutionFurigana.Background = Brushes.White;
+            vm.CurrentCompleteSolutionHint = "";
+            vm.CurrentCompleteSolutionHintFurigana = "";
             NewQuizItem();
             await PlaySentence();
         }

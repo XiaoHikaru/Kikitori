@@ -32,6 +32,7 @@ namespace Kikitori.ViewModel
             OnPropertyChanged(nameof(CurrentSolutionCandidate));
             OnPropertyChanged(nameof(CurrentMP3Audio));
             OnPropertyChanged(nameof(currentCompleteSolutionHint));
+            OnPropertyChanged(nameof(currentCompleteSolutionHintFurigana));
         }
 
         public bool GetNewItem()
@@ -51,12 +52,18 @@ namespace Kikitori.ViewModel
         public bool CheckAnswer()
         {
             bool isCorrect = currentQuiz.CheckInput(CurrentSolutionCandidate);
-            CurrentCompleteSolutionHint = currentItem.Sentence.Replace("*", " ");
             if (isCorrect)
             {
+                CurrentCompleteSolutionHint = "すごい！";
+                CurrentCompleteSolutionHintFurigana = "";
                 currentItem.TrainedKnownTokens = currentQuiz.GetKnownTokens();
                 DB.Instance.Update(currentItem);
 
+            }
+            else
+            {
+                CurrentCompleteSolutionHint = "違う: " + currentItem.Sentence.Replace("*", " ");
+                CurrentCompleteSolutionHintFurigana = currentItem.Furigana.Replace("*", " ");
             }
             return isCorrect;
         }
@@ -100,6 +107,16 @@ namespace Kikitori.ViewModel
             set
             {
                 SetField(ref currentCompleteSolutionHint, value); NotifyAll();
+            }
+        }
+
+        private string currentCompleteSolutionHintFurigana;
+        public string CurrentCompleteSolutionHintFurigana
+        {
+            get { return currentCompleteSolutionHintFurigana; }
+            set
+            {
+                SetField(ref currentCompleteSolutionHintFurigana, value); NotifyAll();
             }
         }
 

@@ -121,6 +121,5 @@ namespace Kikitori.Games
             }
             return false;
         }
-
     }
 }

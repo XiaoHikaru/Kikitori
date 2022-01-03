@@ -17,11 +17,11 @@
                 <StackPanel Orientation="Vertical" Margin="3">
                     <StackPanel Orientation="Vertical" Margin="3">
                         <TextBlock Background="LightYellow" Name="TextBlockSentencePrefix" Text="{Binding CurrentSentencePrefix}" Margin="5" 
-                                       FontSize="16"
+                                       FontSize="20"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                        <TextBox FontSize="16" Height="25" Width="Auto" Text="{Binding CurrentSolutionCandidate}"/>
+                        <TextBox FontSize="20" Height="25" Width="Auto" Text="{Binding CurrentSolutionCandidate}"/>
                         <TextBlock Background="LightYellow" Name="TextBlockSentenceSuffix" Text="{Binding CurrentSentenceSuffix}" Margin="5" 
-                                       FontSize="16"
+                                       FontSize="20"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                         <StackPanel Orientation="Horizontal" Margin="3">
@@ -31,7 +31,12 @@
                         </StackPanel>
                         <DockPanel LastChildFill="True">
                             <TextBlock Name="TextBlockSolution" Text="{Binding CurrentCompleteSolutionHint}" Margin="5" 
-                                       FontSize="16"
+                                       FontSize="20"
+                                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Name="TextBlockSolutionFurigana" Text="{Binding CurrentCompleteSolutionHintFurigana}" Margin="5" 
+                                       FontSize="20"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
                         </DockPanel>
                     </StackPanel>

@@ -25,7 +25,6 @@ namespace Kikitori.Audio
                 var tcs = new TaskCompletionSource<bool>();
                 try
                 {
-
                     System.IO.File.WriteAllBytes(tempFileName, mp3Content);
                     mediaPlayer.MediaEnded += (sender, e) =>
                     {
@@ -35,7 +34,6 @@ namespace Kikitori.Audio
                     };
                     mediaPlayer.Open(new Uri(tempFileName, UriKind.Relative));
                     mediaPlayer.Play();
-
                 }
                 catch (System.IO.IOException e)
                 {
@@ -43,6 +41,29 @@ namespace Kikitori.Audio
                     tcs.TrySetResult(false);
                 }
                 return tcs.Task;
+            }
+        }
+
+
+        public void SimplePlay(byte[] mp3Content)
+        {
+            lock (this)
+            {
+                try
+                {
+                    System.IO.File.WriteAllBytes(tempFileName, mp3Content);
+                    mediaPlayer.MediaEnded += (sender, e) =>
+                    {
+                        mediaPlayer.Close();
+                        System.IO.File.Delete(tempFileName);
+                    };
+                    mediaPlayer.Open(new Uri(tempFileName, UriKind.Relative));
+                    mediaPlayer.Play();
+                }
+                catch (System.IO.IOException e)
+                {
+                    Console.WriteLine("Could not play audio file: problems with IO: " + e.Message);
+                }
             }
         }
     }
