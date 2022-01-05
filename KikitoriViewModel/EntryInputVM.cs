@@ -129,9 +129,9 @@ namespace Kikitori.ViewModel
             CurrentMP3Audio = null;
         }
 
-        public void TransferToDB()
+        public void TransferToDB(bool deleteTrainingData)
         {
-            SentenceItems.TransferToDB(currentMedium);
+            SentenceItems.TransferToDB(currentMedium, deleteTrainingData);
         }
 
         public void DeleteSelectedIndex()

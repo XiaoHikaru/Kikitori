@@ -108,7 +108,7 @@ namespace Kikitori.Games
 
         private string Normalize(string s)
         {
-            return s.Replace(" ", "");
+            return s.Replace(" ", "").Replace("、", "").Replace("。", "").Replace("」", "").Replace("「", "").Replace("　", "");
         }
 
         public bool IsCorrectAnswer(int tokenIndex, string answer)

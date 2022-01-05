@@ -22,7 +22,7 @@ namespace Kikitori
 
         private void ItemEdited(object sender, EventArgs e)
         {
-            vm.TransferToDB();
+            vm.TransferToDB(true);
         }
 
         private async void ButtonAddClipboardContentClick(object sender, RoutedEventArgs e)
@@ -57,7 +57,7 @@ namespace Kikitori
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            vm.TransferToDB();
+            vm.TransferToDB(false);
         }
 
         private void ButtonDeleteEntryClick(object sender, RoutedEventArgs e)

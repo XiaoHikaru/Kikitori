@@ -16,11 +16,11 @@ namespace Kikitori.ViewModel
             Clear();
             foreach (var item in DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == medium.ID).OrderBy(item => item.SequenceOrderIndex))
             {
-               Add(item);
+                Add(item);
             }
         }
 
-        public void TransferToDB(Medium medium)
+        public void TransferToDB(Medium medium, bool deleteTrainingData)
         {
             int sequenceOrderIndex = 1;
             foreach (var element in Items)
@@ -32,7 +32,10 @@ namespace Kikitori.ViewModel
                     {
                         item.Furigana = item.Sentence;
                     }
-                    item.TrainedKnownTokens = "";
+                    if (deleteTrainingData)
+                    {
+                        item.TrainedKnownTokens = "";
+                    }
                     item.ExerciseMediumLink = medium.ID;
                     item.SequenceOrderIndex = sequenceOrderIndex++;
                     DB.Instance.Update(item);
