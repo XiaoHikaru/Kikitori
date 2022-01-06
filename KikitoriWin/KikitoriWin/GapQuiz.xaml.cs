@@ -71,6 +71,7 @@ namespace Kikitori
                 TextBlockSolutionFurigana.Background = Brushes.OrangeRed;
                 await PlaySentence();
                 await WaitABit(2000);
+                MessageBox.Show("分かりましたか。", "Confirmation", MessageBoxButton.OK);
             }
             TextBlockSolution.Background = Brushes.White;
             TextBlockSolutionFurigana.Background = Brushes.White;

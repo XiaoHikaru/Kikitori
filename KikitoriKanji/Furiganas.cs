@@ -34,10 +34,20 @@ namespace Kikitori.Kanji
                     result += d.Surface;
                 }
             }
-
             return result;
         }
 
+
+        public static async Task<string> GetRomaji(string sentence)
+        {
+            if (sentence == null)
+            {
+                sentence = "";
+            }
+            var converter = new KawazuConverter();
+            var result = await converter.Convert(sentence, To.Romaji, Mode.Normal, RomajiSystem.Hepburn, "(", ")");
+            return result;
+        }
 
         public static async Task<string> GetFuriganaProposition(string sentence)
         {

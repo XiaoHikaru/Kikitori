@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SentenceItem = Kikitori.Data.SentenceItem;
 
 namespace Kikitori.Games
@@ -108,7 +109,7 @@ namespace Kikitori.Games
 
         private string Normalize(string s)
         {
-            return s.Replace(" ", "").Replace("、", "").Replace("。", "").Replace("」", "").Replace("「", "").Replace("　", "");
+            return s.Replace(" ", "").Replace("、", "").Replace("。", "").Replace("」", "").Replace("「", "").Replace("　", "").Replace(",", "").Replace(".", "").Replace("ー", "-");
         }
 
         public bool IsCorrectAnswer(int tokenIndex, string answer)
@@ -116,6 +117,12 @@ namespace Kikitori.Games
             answer = Normalize(answer);
             if (StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(allTokensFurigana[tokenIndex]))
                 || StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(allTokensSentence[tokenIndex])))
+            {
+                return true;
+            }
+            string asRomaji = "";
+            Nito.AsyncEx.AsyncContext.Run(async () => { asRomaji = await Kanji.Furiganas.GetRomaji(allTokensFurigana[tokenIndex]); });
+            if (StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(asRomaji)))
             {
                 return true;
             }

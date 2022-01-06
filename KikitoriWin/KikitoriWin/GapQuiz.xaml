@@ -31,12 +31,12 @@
                         </StackPanel>
                         <DockPanel LastChildFill="True">
                             <TextBlock Name="TextBlockSolution" Text="{Binding CurrentCompleteSolutionHint}" Margin="5" 
-                                       FontSize="20"
+                                       FontSize="18"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
                         </DockPanel>
                         <DockPanel LastChildFill="True">
                             <TextBlock Name="TextBlockSolutionFurigana" Text="{Binding CurrentCompleteSolutionHintFurigana}" Margin="5" 
-                                       FontSize="20"
+                                       FontSize="18"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
                         </DockPanel>
                     </StackPanel>

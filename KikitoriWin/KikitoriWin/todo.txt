@@ -1,8 +1,10 @@
 ﻿
-Quiz Fortschrittszaehler
+Quiz Fortschrittszaehler (!)
 Normalisierung der eingabe
 Romaj statt furigana als eingabe
 Besseres feedback bei falsch oder richtig ()
 Edit-Button bei Quiz?
+Romaji in Gapquiz und Eingabe (nicht modifizierbar)
+
 
 
