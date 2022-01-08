@@ -20,7 +20,8 @@ namespace Kikitori.ViewModel
         {
             this.mainWindow = mainWindow;
             currentMedium = mainWindow.Media[mainWindow.SelectedMediumIndex];
-            currentQuiz = new Games.GapQuiz(DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == currentMedium.ID).ToList());
+            var theItems = DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == currentMedium.ID).ToList();
+            currentQuiz = new Games.GapQuiz(theItems);
             NotifyAll();
         }
 
@@ -31,8 +32,11 @@ namespace Kikitori.ViewModel
             OnPropertyChanged(nameof(CurrentSentencePrefix));
             OnPropertyChanged(nameof(CurrentSolutionCandidate));
             OnPropertyChanged(nameof(CurrentMP3Audio));
-            OnPropertyChanged(nameof(currentCompleteSolutionHint));
-            OnPropertyChanged(nameof(currentCompleteSolutionHintFurigana));
+            OnPropertyChanged(nameof(CurrentCompleteSolutionHint));
+            OnPropertyChanged(nameof(CurrentCompleteSolutionHintFurigana));
+            OnPropertyChanged(nameof(CurrentCompleteSolutionHintRomaji));
+            OnPropertyChanged(nameof(NumberOfCorrectTokens));
+            OnPropertyChanged(nameof(NumberOfTokens));
         }
 
         public bool GetNewItem()
@@ -117,6 +121,34 @@ namespace Kikitori.ViewModel
             set
             {
                 SetField(ref currentCompleteSolutionHintFurigana, value); NotifyAll();
+            }
+        }
+
+        public string CurrentCompleteSolutionHintRomaji
+        {
+            get
+            {
+                if (CurrentCompleteSolutionHintFurigana == null) { return ""; }
+                else
+                {
+                    return Kanji.Furiganas.GetRomajiNonAsync(CurrentCompleteSolutionHintFurigana);
+                }
+            }
+        }
+
+        public int NumberOfCorrectTokens
+        {
+            get
+            {
+                return currentQuiz.CorrectTokensCount;
+            }
+        }
+
+        public int NumberOfTokens
+        {
+            get
+            {
+                return currentQuiz.TokensCount;
             }
         }
 

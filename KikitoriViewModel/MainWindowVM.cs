@@ -30,12 +30,11 @@ namespace Kikitori.ViewModel
             NotifyAll();
         }
 
-        public void Save()
+        public void SaveAndCloseDB()
         {
-            DB.Instance.SaveAll();
+            DB.Instance.SaveAndClose();
             NotifyAll();
         }
-
 
         #region Properties
 
@@ -59,7 +58,7 @@ namespace Kikitori.ViewModel
         public void NewMedium()
         {
             var newMedium = new Data.Medium { Title = "New Title", Description = "Give Description" };
-            Media.Insert(Media.Count, newMedium);
+            Media.InsertAndUpdateDB(Media.Count, newMedium);
             NotifyAll();
         }
 

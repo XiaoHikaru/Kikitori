@@ -49,6 +49,21 @@ namespace Kikitori.Kanji
             return result;
         }
 
+        public static string GetRomajiNonAsync(string sentence)
+        {
+            string result = "";
+            try
+            {
+                Nito.AsyncEx.AsyncContext.Run(async () => { result = await Kanji.Furiganas.GetRomaji(sentence); });
+            }
+            catch (System.IO.IOException ex)
+            {
+                Console.WriteLine("Problem with GetRomajiNonAsync: " + ex.Message + "," + ex.StackTrace);
+                return sentence;
+            }
+            return result;
+        }
+
         public static async Task<string> GetFuriganaProposition(string sentence)
         {
             if (sentence == null)

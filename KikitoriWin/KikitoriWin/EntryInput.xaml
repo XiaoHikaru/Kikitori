@@ -22,13 +22,19 @@
                             <TextBlock Name="TextBlockSentence" Text="Sentence" Margin="5" 
                                        FontSize="16"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                            <TextBox Name="TextBoxSentence" FontSize="16" Height="25" Width="Auto" Text="{Binding CurrentSentence}" />
+                            <TextBox Name="TextBoxSentence" FontSize="16" Height="25" Width="817" Text="{Binding CurrentSentence}" />
                         </DockPanel >
                         <DockPanel Background="LightSkyBlue" LastChildFill="True">
-                            <TextBlock Name="TextBlockFurigana" Text="Furigana" Margin="5" 
+                            <TextBlock Name="TextBlockFurigana" Text="Furigana " Margin="5" 
                                        FontSize="16"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                            <TextBox FontSize="16" Height="25" Width="Auto" Text="{Binding CurrentFurigana}"/>
+                            <TextBox FontSize="16" Height="25" Width="817" Text="{Binding CurrentFurigana}"/>
+                        </DockPanel >
+                        <DockPanel Background="LightSkyBlue" LastChildFill="True">
+                            <TextBlock Name="TextBlockRomaji" Text="Romaji" Margin="5" 
+                                       FontSize="16"
+                                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <TextBox IsEnabled="False" FontSize="16" Height="25" Width="833" Text="{Binding CurrentRomaji, Mode=OneWay}"/>
                         </DockPanel >
                         <DockPanel Background="LightSkyBlue" LastChildFill="True">
                             <TextBlock Text="Audio" Margin="5" 
@@ -46,7 +52,7 @@
                     </StackPanel>
                 </StackPanel>
                 <Grid DockPanel.Dock="Bottom">
-                        <DataGrid ItemsSource="{Binding SentenceItems, Mode=TwoWay}" 
+                    <DataGrid ItemsSource="{Binding SentenceItems, Mode=TwoWay}" 
                               Name="SentenceItemsGrid" 
                               AutoGenerateColumns="False" 
                               CanUserAddRows="False" 
@@ -56,22 +62,22 @@
                               ScrollViewer.CanContentScroll="True" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Sentence, Mode=TwoWay}" Width="4*" Header="Sentence" IsReadOnly="False" FontSize="25"  />
-                                <DataGridTextColumn Binding="{Binding Furigana, Mode=TwoWay}" Width="6*" Header="Furigana" IsReadOnly="False" FontSize="25"  />
-                            </DataGrid.Columns>
-                            <DataGrid.RowValidationRules>
-                                <vm:SentenceItemValidationRule ValidationStep="UpdatedValue"/>
-                            </DataGrid.RowValidationRules>
-                            <DataGrid.RowValidationErrorTemplate>
-                                <ControlTemplate>
-                                    <Grid Margin="0,-2,0,-2" ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
-                                        <Ellipse StrokeThickness="0" Fill="Red" Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}" />
-                                        <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"  />
-                                    </Grid>
-                                </ControlTemplate>
-                            </DataGrid.RowValidationErrorTemplate>
-                        </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Sentence, Mode=TwoWay}" Width="4*" Header="Sentence" IsReadOnly="False" FontSize="25"  />
+                            <DataGridTextColumn Binding="{Binding Furigana, Mode=TwoWay}" Width="6*" Header="Furigana" IsReadOnly="False" FontSize="25"  />
+                        </DataGrid.Columns>
+                        <DataGrid.RowValidationRules>
+                            <vm:SentenceItemValidationRule ValidationStep="UpdatedValue"/>
+                        </DataGrid.RowValidationRules>
+                        <DataGrid.RowValidationErrorTemplate>
+                            <ControlTemplate>
+                                <Grid Margin="0,-2,0,-2" ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
+                                    <Ellipse StrokeThickness="0" Fill="Red" Width="{TemplateBinding FontSize}" Height="{TemplateBinding FontSize}" />
+                                    <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"  />
+                                </Grid>
+                            </ControlTemplate>
+                        </DataGrid.RowValidationErrorTemplate>
+                    </DataGrid>
                 </Grid>
             </DockPanel>
         </Border>

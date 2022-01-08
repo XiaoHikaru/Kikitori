@@ -32,9 +32,9 @@ namespace Kikitori.ViewModel
             }
         }
 
-        public void Insert(Medium medium)
+        public void InsertAndUpdateDB(int index, Medium medium)
         {
-            Add(medium);
+            Insert(index, medium);
             DB.Instance.Save<Medium>(medium);
         }
 
@@ -53,8 +53,8 @@ namespace Kikitori.ViewModel
 
         public void ResetTrainingData(int index)
         {
-            Medium mediumToDelete = this[index];
-            foreach (var item in DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == mediumToDelete.ID))
+            Medium currentMedium = this[index];
+            foreach (var item in DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == currentMedium.ID))
             {
                 item.TrainedKnownTokens = "";
                 DB.Instance.Update(item);

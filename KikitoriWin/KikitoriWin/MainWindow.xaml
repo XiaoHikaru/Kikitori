@@ -9,6 +9,7 @@
         Title="{Binding Title}" 
         Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.5' }" 
         Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.5' }" 
+        Closing="WindowClosing"
     >
     <Grid>
         <Menu DockPanel.Dock="Top">

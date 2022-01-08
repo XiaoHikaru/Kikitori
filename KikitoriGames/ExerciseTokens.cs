@@ -40,6 +40,26 @@ namespace Kikitori.Games
             }
         }
 
+        public int TokenCount
+        {
+            get { return allTokensSentence.Count; }
+        }
+
+        public int CorrectTokenCount
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(trainedKnownTokens))
+                {
+                    return 0;
+                }
+                else
+                {
+                    return trainedKnownTokens.Split(';').Length;
+                }
+            }
+        }
+
         public List<int> GetAllUnknownTokens()
         {
             List<int> result = new List<int>();
@@ -120,8 +140,7 @@ namespace Kikitori.Games
             {
                 return true;
             }
-            string asRomaji = "";
-            Nito.AsyncEx.AsyncContext.Run(async () => { asRomaji = await Kanji.Furiganas.GetRomaji(allTokensFurigana[tokenIndex]); });
+            string asRomaji = Kanji.Furiganas.GetRomajiNonAsync(allTokensFurigana[tokenIndex]);
             if (StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(asRomaji)))
             {
                 return true;

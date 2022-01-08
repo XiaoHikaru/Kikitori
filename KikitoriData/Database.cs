@@ -53,18 +53,18 @@ namespace Kikitori.Data
         }
 
         public void Update<T>(T item)
-            where T: Entity
+            where T : Entity
         {
             database.Update(item);
         }
 
         public void Delete<T>(T item)
-            where T: Entity
+            where T : Entity
         {
             database.Delete(item);
         }
 
-        public void SaveAll()
+        public void SaveAndClose()
         {
             database.Close();
             database = new SQLiteConnection(Path);

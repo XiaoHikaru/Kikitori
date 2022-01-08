@@ -14,14 +14,24 @@ namespace Kikitori
     public partial class MainWindow : Window
     {
 
-        Kikitori.ViewModel.MainWindowVM vm;
+        ViewModel.MainWindowVM vm;
 
         public MainWindow()
         {
             vm = new Kikitori.ViewModel.MainWindowVM();
             DataContext = vm;
             InitializeComponent();
+        }
 
+        private void OnEndApplication()
+        {
+            vm.TransferToDB();
+            vm.SaveAndCloseDB();
+        }
+
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OnEndApplication();
         }
 
         private static string GetFileName<T>()
@@ -62,6 +72,7 @@ namespace Kikitori
 
         private void OnClickExit(object sender, RoutedEventArgs e)
         {
+            OnEndApplication();
             Close();
         }
 

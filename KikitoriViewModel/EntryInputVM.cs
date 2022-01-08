@@ -31,10 +31,12 @@ namespace Kikitori.ViewModel
             OnPropertyChanged(nameof(SentenceItems));
             OnPropertyChanged(nameof(CurrentSentence));
             OnPropertyChanged(nameof(CurrentFurigana));
+            OnPropertyChanged(nameof(CurrentRomaji));
             OnPropertyChanged(nameof(CurrentMP3Audio));
             OnPropertyChanged(nameof(CurrentInputIsComplete));
             OnPropertyChanged(nameof(CurrentMP3AudioPresent));
             OnPropertyChanged(nameof(SelectedItemIndex));
+
         }
 
         #region Properties
@@ -64,6 +66,18 @@ namespace Kikitori.ViewModel
         {
             get { return currentFurigana; }
             set { SetField(ref currentFurigana, value); NotifyAll(); }
+        }
+
+        public string CurrentRomaji
+        {
+            get
+            {
+                if (CurrentFurigana == null) { return ""; }
+                else
+                {
+                    return Kanji.Furiganas.GetRomajiNonAsync(CurrentFurigana);
+                }
+            }
         }
 
         private byte[] currentMP3Audio;

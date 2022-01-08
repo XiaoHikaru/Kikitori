@@ -61,19 +61,21 @@ namespace Kikitori
             if (vm.CheckAnswer())
             {
                 TextBlockSolution.Background = Brushes.LightGreen;
-                TextBlockSolutionFurigana.Background = Brushes.LightGreen;
                 TextBlockSolutionFurigana.Background = Brushes.White;
+                TextBlockSolutionRomaji.Background = Brushes.White;
                 await WaitABit(2000);
             }
             else
             {
                 TextBlockSolution.Background = Brushes.OrangeRed;
                 TextBlockSolutionFurigana.Background = Brushes.OrangeRed;
+                TextBlockSolutionRomaji.Background = Brushes.OrangeRed;
                 await PlaySentence();
                 await WaitABit(2000);
                 MessageBox.Show("分かりましたか。", "Confirmation", MessageBoxButton.OK);
             }
             TextBlockSolution.Background = Brushes.White;
+            TextBlockSolutionFurigana.Background = Brushes.White;
             TextBlockSolutionFurigana.Background = Brushes.White;
             vm.CurrentCompleteSolutionHint = "";
             vm.CurrentCompleteSolutionHintFurigana = "";

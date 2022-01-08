@@ -20,6 +20,34 @@ namespace Kikitori.Games
             currentItems = items;
         }
 
+        public int TokensCount
+        {
+            get
+            {
+                int result = 0;
+                foreach (var item in currentItems)
+                {
+                    var tokens = new ExerciseTokens(item);
+                    result += tokens.TokenCount;
+                }
+                return result;
+            }
+        }
+
+        public int CorrectTokensCount
+        {
+            get
+            {
+                int result = 0;
+                foreach (var item in currentItems)
+                {
+                    var tokens = new ExerciseTokens(item);
+                    result += tokens.CorrectTokenCount;
+                }
+                return result;
+            }
+        }
+
         /// <summary>
         /// Returns true iff there is at least one exercise token in <paramref name="item"/> which
         /// has not been entered correctly by the player yet.
