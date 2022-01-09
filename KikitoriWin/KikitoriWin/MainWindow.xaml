@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kikitori"
         xmlns:tools="clr-namespace:Kikitori.GUI"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -11,6 +12,9 @@
         Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.5' }" 
         Closing="WindowClosing"
     >
+    <Window.Resources>
+        <local:QuizProgressConverter x:Key="QuizProgressConverter"/>
+    </Window.Resources>
     <Grid>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -28,7 +32,7 @@
                 <StackPanel Orientation="Horizontal" Margin="3" DockPanel.Dock="Top">
                     <Button Name="ButtonAddMedia" Content="Add Medium" Margin="3" IsEnabled="{Binding DatabaseLoaded}" Click="ButtonAddMediaClick"/>
                     <Button Name="ButtonDeleteMedia" Content="Delete Medium" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonDeleteMediaClick"/>
-                    <Button Name="ButtonAddExerciseEntry" Content="Add exercise entries" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonAddExerciseEntryClick"/>
+                    <Button Name="ButtonAddExerciseEntry" Content="Add/Edit exercise entries" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonAddExerciseEntryClick"/>
                     <Button Name="ButtonStartGapQuiz" Content="Gap Quiz" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonStartGapQuizClick"/>
                     <Button Name="ButtonResetGapQuiz" Content="Reset Gap Quiz results" Margin="3" IsEnabled="{Binding MediumSelected}" Click="ButtonResetGapQuizClick"/>
 
@@ -38,6 +42,7 @@
                               Name="MediaGrid" 
                               AutoGenerateColumns="False" 
                               CanUserAddRows="False" 
+                              CanUserSortColumns="False"
                               SelectionMode="Single" 
                               CurrentCellChanged="CellEdited"
                               SelectedIndex="{Binding SelectedMediumIndex, Mode=OneWayToSource}"
@@ -46,12 +51,22 @@
                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
                               >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Title}" Width="3*" Header="Title" IsReadOnly="False" FontSize="25"  />
-                            <DataGridTextColumn Binding="{Binding Description}" Width="7*" Header="Description" IsReadOnly="False" FontSize="25"  />
+                            <DataGridTextColumn Binding="{Binding Title}" Width="4*" Header="Title" IsReadOnly="False" FontSize="25"  />
+                            <DataGridTextColumn Binding="{Binding Description}" Width="5*" Header="Description" IsReadOnly="False" FontSize="25"  />
+                            <DataGridTextColumn IsReadOnly="True"  Width="1*" Header="Gap Quiz" FontSize="25">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource QuizProgressConverter}">
+                                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext" />
+                                        <Binding Path="ID" />
+                                        <!-- This one only to enforce updates if media have changed, it is not used in the converter: -->
+                                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext.QuizCount" />
+                                        <!--<Binding RelativeSource="{RelativeSource AncestorType=DataGridCell}" Path="Column.DisplayIndex" />-->
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
-
             </DockPanel>
         </Border>
     </Grid>

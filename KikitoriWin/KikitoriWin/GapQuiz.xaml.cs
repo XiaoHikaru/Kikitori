@@ -14,25 +14,41 @@ namespace Kikitori
     public partial class GapQuiz : Window
     {
         Kikitori.ViewModel.GapQuizVM vm;
+        public bool QuizCompleted = false;
 
-        public void NewQuizItem()
+        public bool NewQuizItem()
         {
-            if (!vm.GetNewItem())
+            QuizCompleted = !vm.GetNewItem();
+            if (QuizCompleted)
             {
                 MessageBox.Show("Congratulations, you know every token.", "Congrats");
                 Close();
+                return false;
             }
+            return true;
         }
 
         public GapQuiz(Kikitori.ViewModel.MainWindowVM mainWindowVM)
         {
             vm = new Kikitori.ViewModel.GapQuizVM(mainWindowVM);
-            DataContext = vm;
             InitializeComponent();
+            DataContext = vm;
             NewQuizItem();
-            var player = new Kikitori.Audio.AudioPlayer();
-            player.SimplePlay(vm.CurrentMP3Audio);
+            if (QuizCompleted)
+            {
+                Close();
+            }
+            else
+            {
+                var player = new Kikitori.Audio.AudioPlayer();
+                player.SimplePlay(vm.CurrentMP3Audio);
+            }
 
+        }
+
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            vm.CloseQuiz();
         }
 
         private async Task PlaySentence()
@@ -58,12 +74,13 @@ namespace Kikitori
 
         private async void ButtonCheckClick(object sender, RoutedEventArgs e)
         {
+            IsEnabled = false;
             if (vm.CheckAnswer())
             {
                 TextBlockSolution.Background = Brushes.LightGreen;
                 TextBlockSolutionFurigana.Background = Brushes.White;
                 TextBlockSolutionRomaji.Background = Brushes.White;
-                await WaitABit(2000);
+                await WaitABit(500);
             }
             else
             {
@@ -71,16 +88,21 @@ namespace Kikitori
                 TextBlockSolutionFurigana.Background = Brushes.OrangeRed;
                 TextBlockSolutionRomaji.Background = Brushes.OrangeRed;
                 await PlaySentence();
-                await WaitABit(2000);
+                await WaitABit(500);
                 MessageBox.Show("分かりましたか。", "Confirmation", MessageBoxButton.OK);
             }
             TextBlockSolution.Background = Brushes.White;
             TextBlockSolutionFurigana.Background = Brushes.White;
-            TextBlockSolutionFurigana.Background = Brushes.White;
+            TextBlockSolutionRomaji.Background = Brushes.White;
             vm.CurrentCompleteSolutionHint = "";
             vm.CurrentCompleteSolutionHintFurigana = "";
+            IsEnabled = true;
             NewQuizItem();
-            await PlaySentence();
+            if (!QuizCompleted)
+            {
+                await PlaySentence();
+            }
+
         }
     }
 }

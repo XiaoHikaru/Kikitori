@@ -66,8 +66,7 @@ namespace Kikitori.Data
 
         public void SaveAndClose()
         {
-            database.Close();
-            database = new SQLiteConnection(Path);
+            database?.Close();
         }
 
         public void ClearAll<T>()

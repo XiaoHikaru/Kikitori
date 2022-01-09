@@ -9,6 +9,7 @@
         Title="{Binding Title}" 
         Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.4' }" 
         Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:WindowSizeConverter}, ConverterParameter='0.4' }" 
+        Closing="WindowClosing"
         >
     <Grid>
         <Border Visibility="Visible" BorderThickness="2" BorderBrush="Black" CornerRadius="1" Margin="20,20,20,20">

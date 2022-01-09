@@ -57,6 +57,8 @@
                               AutoGenerateColumns="False" 
                               CanUserAddRows="False" 
                               SelectionMode="Single" 
+                              CanUserSortColumns="False"
+                              CanUserDeleteRows="False"
                               CurrentCellChanged="ItemEdited"
                               SelectedIndex="{Binding SelectedItemIndex, Mode=OneWayToSource}"
                               ScrollViewer.CanContentScroll="True" 

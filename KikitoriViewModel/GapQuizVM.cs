@@ -16,6 +16,25 @@ namespace Kikitori.ViewModel
         SentenceItem currentItem;
         Games.GapQuiz currentQuiz;
 
+        public GapQuizVM(MainWindowVM mainWindow, int mediumID)
+        {
+            this.mainWindow = mainWindow;
+            this.currentMedium = DB.Instance.GetItems<Medium>().Where(medium => medium.ID == mediumID).FirstOrDefault();
+            if (currentMedium == null)
+            {
+                throw new System.Exception("Medium with ID " + mediumID + " not found.");
+            }
+            var theItems = DB.Instance.GetItems<SentenceItem>().Where(item => item.ExerciseMediumLink == currentMedium.ID).ToList();
+            currentQuiz = new Games.GapQuiz(theItems);
+            NotifyAll();
+        }
+
+        public void CloseQuiz()
+        {
+            mainWindow.QuizCount++;
+        }
+
+
         public GapQuizVM(MainWindowVM mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -24,6 +43,7 @@ namespace Kikitori.ViewModel
             currentQuiz = new Games.GapQuiz(theItems);
             NotifyAll();
         }
+
 
         public override void NotifyAll()
         {
@@ -164,7 +184,7 @@ namespace Kikitori.ViewModel
 
         public string Title
         {
-            get => "Gap Quiz for medium " + mainWindow.SelectedMediumTitle;
+            get => "Gap Quiz for medium " + currentMedium?.Title;
         }
 
         #endregion

@@ -67,7 +67,15 @@ namespace Kikitori
 
         private async void ButtonMakeFuriganaPropositionClick(object sender, RoutedEventArgs e)
         {
-            vm.CurrentFurigana = await Kikitori.Kanji.Furiganas.GetFuriganaProposition(vm.CurrentSentence);
+            try
+            {
+                vm.CurrentFurigana = await Kikitori.Kanji.Furiganas.GetFuriganaProposition(vm.CurrentSentence);
+            }
+            catch (System.IO.IOException ex)
+            {
+                Console.WriteLine(ex.ToString() + ":" + ex.StackTrace);
+                vm.CurrentFurigana = "Error during transformation (in external library); try again";
+            }
         }
     }
 

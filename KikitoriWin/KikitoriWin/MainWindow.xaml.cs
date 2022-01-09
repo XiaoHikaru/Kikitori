@@ -115,8 +115,10 @@ namespace Kikitori
         private void ButtonStartGapQuizClick(object sender, RoutedEventArgs e)
         {
             var gapQuiz = new GapQuiz(vm);
-            gapQuiz.ShowDialog();
-            gapQuiz.NewQuizItem();
+            if (!gapQuiz.QuizCompleted)
+            {
+                gapQuiz.ShowDialog();
+            }
         }
     }
 }

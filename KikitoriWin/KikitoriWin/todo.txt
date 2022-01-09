@@ -8,3 +8,11 @@ Romaji in Gapquiz und Eingabe (nicht modifizierbar)
 
 
 
+
+Japanese diff tool:
+input: kanji oder kana oder romaji => abgleich
+
+Editing
+
+
+Wörterliste

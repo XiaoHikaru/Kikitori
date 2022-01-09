@@ -15,12 +15,12 @@ namespace Kikitori.ViewModel
 
         public override void NotifyAll()
         {
-            OnPropertyChanged("Title");
-            OnPropertyChanged("DatabaseLoaded");
-            OnPropertyChanged("Media");
-            OnPropertyChanged("SelectedMediumIndex");
-            OnPropertyChanged("MediumSelected");
-            OnPropertyChanged("SelectedMediumTitle");
+            OnPropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(DatabaseLoaded));
+            OnPropertyChanged(nameof(Media));
+            OnPropertyChanged(nameof(SelectedMediumIndex));
+            OnPropertyChanged(nameof(MediumSelected));
+            OnPropertyChanged(nameof(SelectedMediumTitle));
         }
 
         public void LoadOrCreate(string dbPath)
@@ -28,6 +28,11 @@ namespace Kikitori.ViewModel
             DB.Instance.LoadOrCreateDatabase(dbPath);
             Media.Reload();
             NotifyAll();
+        }
+
+        public bool DBIsLoaded()
+        {
+            return DB.Instance.IsLoaded();
         }
 
         public void SaveAndCloseDB()
@@ -123,6 +128,17 @@ namespace Kikitori.ViewModel
                 }
             }
         }
+
+        private int quizCount = 0;
+        public int QuizCount
+        {
+            get { return quizCount; }
+            set
+            {
+                SetField(ref quizCount, value, nameof(QuizCount));
+            }
+        }
+
         #endregion
 
     }
