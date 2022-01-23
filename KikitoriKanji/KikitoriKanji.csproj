@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Furiganas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleMyersDiff.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AUTHORS" />

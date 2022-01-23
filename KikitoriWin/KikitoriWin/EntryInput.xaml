@@ -22,13 +22,13 @@
                             <TextBlock Name="TextBlockSentence" Text="Sentence" Margin="5" 
                                        FontSize="16"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                            <TextBox Name="TextBoxSentence" FontSize="16" Height="25" Width="817" Text="{Binding CurrentSentence}" />
+                            <TextBox Name="TextBoxSentence" FontSize="16" Height="25" Text="{Binding CurrentSentence}" />
                         </DockPanel >
                         <DockPanel Background="LightSkyBlue" LastChildFill="True">
                             <TextBlock Name="TextBlockFurigana" Text="Furigana " Margin="5" 
                                        FontSize="16"
                                        DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                            <TextBox FontSize="16" Height="25" Width="817" Text="{Binding CurrentFurigana}"/>
+                            <TextBox FontSize="16" Height="25" Text="{Binding CurrentFurigana}"/>
                         </DockPanel >
                         <DockPanel Background="LightSkyBlue" LastChildFill="True">
                             <TextBlock Name="TextBlockRomaji" Text="Romaji" Margin="5" 

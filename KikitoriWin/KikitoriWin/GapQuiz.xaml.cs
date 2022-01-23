@@ -41,7 +41,7 @@ namespace Kikitori
             else
             {
                 var player = new Kikitori.Audio.AudioPlayer();
-                player.SimplePlay(vm.CurrentMP3Audio);
+                player.NonAsyncPlay(vm.CurrentMP3Audio);
             }
 
         }

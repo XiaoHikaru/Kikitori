@@ -41,8 +41,10 @@ namespace Kikitori
 
         private async void ButtonAudioPlayClick(object sender, RoutedEventArgs e)
         {
+            ButtonAudioPlay.IsEnabled = false;
             var player = new Kikitori.Audio.AudioPlayer();
             await player.Play(vm.CurrentMP3Audio);
+            ButtonAudioPlay.IsEnabled = true;
         }
 
         private void ButtonAddEntryClick(object sender, RoutedEventArgs e)

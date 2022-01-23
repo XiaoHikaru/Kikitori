@@ -9,6 +9,8 @@ namespace Kikitori.Audio
 {
     public class AudioPlayer
     {
+
+        private static object _lockObject = new object();
         private string tempFileName;
         private MediaPlayer mediaPlayer;
 
@@ -20,7 +22,7 @@ namespace Kikitori.Audio
 
         public Task Play(byte[] mp3Content)
         {
-            lock (this)
+            lock (_lockObject)
             {
                 var tcs = new TaskCompletionSource<bool>();
                 try
@@ -45,9 +47,9 @@ namespace Kikitori.Audio
         }
 
 
-        public void SimplePlay(byte[] mp3Content)
+        public void NonAsyncPlay(byte[] mp3Content)
         {
-            lock (this)
+            lock (_lockObject)
             {
                 try
                 {

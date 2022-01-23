@@ -7,10 +7,17 @@ Edit-Button bei Quiz?
 Romaji in Gapquiz und Eingabe (nicht modifizierbar)
 
 
-
-
 Japanese diff tool:
 input: kanji oder kana oder romaji => abgleich
+
+1) Katakana->Hiragana-Konvertierung (beide Seiten)
+=> nur 
+a) Romaji
+b) Hiragana (ohne)
+
+2) Simpler Myers-Diff
+3) Ausnahmen: toki, nakanaka, ...
+
 
 Editing
 

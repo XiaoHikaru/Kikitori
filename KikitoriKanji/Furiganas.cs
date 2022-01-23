@@ -74,5 +74,11 @@ namespace Kikitori.Kanji
             var result = await converter.Convert(sentence, To.Hiragana, Mode.Normal, RomajiSystem.Hepburn, "(", ")");
             return result;
         }
+
+        public static string ConvertKatakanaToHiragana(string sentence)
+        {
+            return sentence;
+        }
+
     }
 }
