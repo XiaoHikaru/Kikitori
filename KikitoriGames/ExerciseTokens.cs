@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kikitori.Kanji;
 using System.Threading.Tasks;
 using SentenceItem = Kikitori.Data.SentenceItem;
 
@@ -132,20 +133,56 @@ namespace Kikitori.Games
             return s.Replace(" ", "").Replace("、", "").Replace("。", "").Replace("」", "").Replace("「", "").Replace("　", "").Replace(",", "").Replace(".", "").Replace("ー", "-");
         }
 
-        public bool IsCorrectAnswer(int tokenIndex, string answer)
+        private string ComputeMinimalDiff(string solution, string sentence, string furigana, string romaji)
+        {
+            solution = Normalize(solution);
+            var sentenceDiff = new SimpleMyersDiff(solution, Normalize(sentence));
+            var furiganaDiff = new SimpleMyersDiff(solution, Normalize(furigana));
+            var romajiDiff = new SimpleMyersDiff(solution, Normalize(romaji));
+
+            int countSentence = sentenceDiff.NumberOfDeletions(true);
+            int countFurigana = furiganaDiff.NumberOfDeletions(true);
+            int countRomaji = romajiDiff.NumberOfDeletions(true);
+
+            if (countSentence <= countFurigana)
+            {
+                if (countSentence <= countRomaji)
+                {
+                    return sentenceDiff.GetDiffAsText(true) + "\n" + sentenceDiff.GetDiffAsText(false);
+                }
+                else
+                {
+                    return romajiDiff.GetDiffAsText(true) + "\n" + romajiDiff.GetDiffAsText(false);
+                }
+            }
+            else
+            {
+                if (countFurigana <= countRomaji)
+                {
+                    return furiganaDiff.GetDiffAsText(true) + "\n" + furiganaDiff.GetDiffAsText(false);
+                }
+                else
+                {
+                    return romajiDiff.GetDiffAsText(true) + "\n" + romajiDiff.GetDiffAsText(false);
+                }
+            }
+        }
+
+        public (bool, string) IsCorrectAnswer(int tokenIndex, string answer)
         {
             answer = Normalize(answer);
             if (StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(allTokensFurigana[tokenIndex]))
                 || StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(allTokensSentence[tokenIndex])))
             {
-                return true;
+                return (true, "");
             }
             string asRomaji = Kanji.Furiganas.GetRomajiNonAsync(allTokensFurigana[tokenIndex]);
             if (StringComparer.InvariantCultureIgnoreCase.Equals(answer, Normalize(asRomaji)))
             {
-                return true;
+                return (true, "");
             }
-            return false;
+            string diffText = ComputeMinimalDiff(answer, allTokensSentence[tokenIndex], allTokensFurigana[tokenIndex], asRomaji);
+            return (false, diffText);
         }
     }
 }

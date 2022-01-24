@@ -82,14 +82,14 @@ namespace Kikitori.Games
             return true;
         }
 
-        public bool CheckInput(string answer)
+        public (bool, string) CheckInput(string answer)
         {
-            bool isCorrect = currentExerciseTokens.IsCorrectAnswer(currentTokenIndex, answer);
+            var (isCorrect, diffText) = currentExerciseTokens.IsCorrectAnswer(currentTokenIndex, answer);
             if (isCorrect)
             {
                 currentExerciseTokens.AddKnownToken(currentTokenIndex);
             }
-            return isCorrect;
+            return (isCorrect, diffText);
         }
 
         public string GetKnownTokens()

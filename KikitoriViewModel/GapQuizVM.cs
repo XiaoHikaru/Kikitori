@@ -75,7 +75,7 @@ namespace Kikitori.ViewModel
 
         public bool CheckAnswer()
         {
-            bool isCorrect = currentQuiz.CheckInput(CurrentSolutionCandidate);
+            var (isCorrect, diffText) = currentQuiz.CheckInput(CurrentSolutionCandidate);
             if (isCorrect)
             {
                 CurrentCompleteSolutionHint = "すごい！";
@@ -86,7 +86,7 @@ namespace Kikitori.ViewModel
             }
             else
             {
-                CurrentCompleteSolutionHint = "違う: " + currentItem.Sentence.Replace("*", " ");
+                CurrentCompleteSolutionHint = "違う: " + diffText.Replace("*", " ");
                 CurrentCompleteSolutionHintFurigana = currentItem.Furigana.Replace("*", " ");
             }
             return isCorrect;

@@ -81,18 +81,15 @@ namespace Kikitori.Kanji
 
         int[,] predecessor;
 
-
         int GetPredecessor(int D, int k)
         {
             return predecessor[D, k + maxValue];
         }
+
         void SetPredecessor(int D, int k, int value)
         {
             predecessor[D, k + maxValue] = value;
         }
-
-
-
 
 
         public SimpleMyersDiff(string a, string b)
@@ -118,9 +115,10 @@ namespace Kikitori.Kanji
             }
         }
 
-        List<DiffElement> ComputeEdit(int finalK, int finalD)
+
+        List<DiffElement> ComputeEdit(int finalK, int finalD, bool forFirstString)
         {
-            var result = new List<DiffElement>();
+            var killList = new List<DiffElement>();
             StringBuilder currentSegment = new StringBuilder();
             (int x, int y) currentPoint = (lengthA - 1, lengthB - 1);
             DiffElement editEntry = null;
@@ -130,16 +128,14 @@ namespace Kikitori.Kanji
             {
                 (int x, int y) previousPoint = currentPoint;
                 currentPoint = GetComputedTable(backwardD, currentK);
-                Console.WriteLine("CURRENT POINT: " + currentPoint);
 
                 if (GetPredecessor(backwardD, currentK) == 1)
                 {
                     currentK++;
                     currentPoint = GetComputedTable(backwardD - 1, currentK);
-                    Console.WriteLine("KILL b:" + b[currentPoint.y + 1]);
                     if (editEntry == null || editEntry.Kind != DiffElementKind.REMOVE_B)
                     {
-                        PushEntryIfNotNullAndResetSegment(editEntry, result, currentSegment, currentStringPos);
+                        PushEntryIfNotNullAndResetSegment(editEntry, killList, currentSegment, currentStringPos);
                         editEntry = new DiffElement(DiffElementKind.REMOVE_B);
                     }
                     currentSegment.Insert(0, b[currentPoint.y + 1]);
@@ -149,29 +145,50 @@ namespace Kikitori.Kanji
                 {
                     currentK--;
                     currentPoint = GetComputedTable(backwardD - 1, currentK);
-                    Console.WriteLine("KILL a:" + a[currentPoint.x + 1]);
                     if (editEntry == null || editEntry.Kind != DiffElementKind.REMOVE_A)
                     {
-                        PushEntryIfNotNullAndResetSegment(editEntry, result, currentSegment, currentStringPos);
+                        PushEntryIfNotNullAndResetSegment(editEntry, killList, currentSegment, currentStringPos);
                         editEntry = new DiffElement(DiffElementKind.REMOVE_A);
                     }
                     currentSegment.Insert(0, a[currentPoint.x + 1]);
                     currentStringPos = currentPoint.x + 1;
                 }
-                Console.WriteLine(currentPoint + "");
             }
             if (currentSegment.Length != 0)
             {
-                PushEntryIfNotNullAndResetSegment(editEntry, result, currentSegment, currentStringPos);
+                PushEntryIfNotNullAndResetSegment(editEntry, killList, currentSegment, currentStringPos);
             }
-            foreach (var entry in result)
+            var result = new List<DiffElement>();
+            int currentIndexIn = 0;
+            foreach (var entry in killList)
             {
-                Console.WriteLine(entry.ToString());
+                if (forFirstString && entry.Kind == DiffElementKind.REMOVE_A
+                    || (!forFirstString && entry.Kind == DiffElementKind.REMOVE_B))
+                {
+                    if (entry.StartPos > currentIndexIn)
+                    {
+                        var commonElement = new DiffElement(DiffElementKind.COMMON);
+                        commonElement.StartPos = currentIndexIn;
+                        commonElement.Segment = forFirstString ? a.Substring(currentIndexIn, entry.StartPos - currentIndexIn) : b.Substring(currentIndexIn, entry.StartPos - currentIndexIn);
+                        result.Add(commonElement);
+                        currentIndexIn += commonElement.Segment.Length;
+                    }
+                    result.Add(entry);
+                    currentIndexIn += entry.Segment.Length;
+                }
+            }
+            if (currentIndexIn < lengthA - 1)
+            {
+                var commonElement = new DiffElement(DiffElementKind.COMMON);
+                commonElement.StartPos = currentIndexIn;
+                commonElement.Segment = a.Substring(currentIndexIn, lengthA - currentIndexIn);
+                result.Add(commonElement);
             }
             return result;
         }
 
-        public (int x, int y) Diff()
+
+        public List<DiffElement> GetDiffList(bool forFirstString = true)
         {
             // idea: compute (x,y) = max_end_point(D, k), where
             // - D is the number of non-diagonal edges
@@ -207,15 +224,52 @@ namespace Kikitori.Kanji
                         candidate = (candidate.x + 1, candidate.y + 1);
                     }
                     SetComputedTable(D, k, candidate);
-
                     if (candidate.x >= lengthA - 1 && candidate.y >= lengthB - 1)
                     {
-                        ComputeEdit(k, D);
-                        return candidate;
+                        return ComputeEdit(k, D, forFirstString);
                     }
                 }
             }
-            throw new Exception("error");
+            throw new Exception("Could not find diff for " + a + " and " + b);
+        }
+
+        public int NumberOfDeletions(bool forFirstString)
+        {
+            int result = 0;
+            var diff = GetDiffList(forFirstString);
+            foreach (var entry in diff)
+            {
+                switch (entry.Kind)
+                {
+                    case DiffElementKind.REMOVE_A:
+                    case DiffElementKind.REMOVE_B:
+                        result += entry.Segment.Length;
+                        break;
+                    case DiffElementKind.COMMON:
+                        break;
+                }
+            }
+            return result;
+        }
+
+        public string GetDiffAsText(bool forFirstString)
+        {
+            StringBuilder result = new StringBuilder();
+            var diff = GetDiffList(forFirstString);
+            foreach (var entry in diff)
+            {
+                switch (entry.Kind)
+                {
+                    case DiffElementKind.REMOVE_A:
+                    case DiffElementKind.REMOVE_B:
+                        result.Append("<!!" + entry.Segment + "!!>");
+                        break;
+                    case DiffElementKind.COMMON:
+                        result.Append(entry.Segment);
+                        break;
+                }
+            }
+            return result.ToString();
         }
     }
 }
